@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useTimerStore } from "./FormTimer";
 import { X, Pause, Play } from "lucide-react"; // Assure-toi d'importer l'icône de croix
 
-const Timer = ({ duration, id, time }) => {
-  const { deleteTimer } = useTimerStore(time);
-
+const Timer = ({ duration, id, time, msToTime }) => {
   const now = Date.now();
 
   function formatDuration(duration) {
@@ -20,7 +17,8 @@ const Timer = ({ duration, id, time }) => {
   }
 
   const futureTimeInMilliseconds = now + duration;
-  const futureTimeFormated = formatDuration(futureTimeInMilliseconds);
+  const futureTimeFormated = msToTime(futureTimeInMilliseconds);
+  console.log("futureTimeFormated = ", futureTimeFormated);
 
   const [timerObject, setTimerObject] = useState({
     id,

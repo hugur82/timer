@@ -1,53 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Timer from "./Timer";
-
-export const useTimerStore = (time) => {
-  const [ms, setMs] = useState(
-    time.hrs * 3600000 + time.mins * 60000 + time.secs * 1000
-  );
-  const [tab, setTab] = useState([]);
-
-  const addTime = () => {
-    setTab((prev) => [...prev, { ms: ms, id: tab.length }]);
-    console.log(tab);
-  };
-
-  const delTimer = (id) => {
-    setTab((prevTab) => {
-      const newTab = prevTab.filter((el) => el.id !== id);
-      console.log(
-        "id =",
-        id,
-        "\nprevTab=",
-        prevTab,
-        "\nnewTab=",
-        newTab,
-        "\ntab=",
-        tab
-      );
-
-      return newTab;
-    });
-  };
-
-  return {
-    tab,
-    update: (time) => {
-      setMs(time.hrs * 3600000 + time.mins * 60000 + time.secs * 1000);
-    },
-    ajoutTimer: () => {
-      addTime();
-    },
-    deleteTimer: (id) => {
-      delTimer(id);
-    },
-  };
-};
+import { useTimerStore } from "./useTimerStore";
 
 const FormTimer = () => {
   const [time, setTime] = useState({ hrs: "00", mins: "00", secs: "00" });
 
-  const { ajoutTimer, deleteTimer, update, tab } = useTimerStore(time);
+  const { ajoutTimer, deleteTimer, update, timeToMs, msToTime, tab } =
+    useTimerStore();
 
   const handleChange = (field, val) => {
     if (isNaN(val)) return;
@@ -63,6 +22,7 @@ const FormTimer = () => {
 
   useEffect(() => {
     update(time);
+    console.log("time to ms = ", timeToMs(time));
     return () => {};
   }, [time]);
 
@@ -116,7 +76,13 @@ const FormTimer = () => {
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           {tab &&
             tab.map((el) => (
-              <Timer time={time} duration={el.ms} key={el.id} id={el.id} />
+              <Timer
+                time={time}
+                msToTime={msToTime}
+                duration={el.ms}
+                key={el.id}
+                id={el.id}
+              />
             ))}
         </div>
       </div>
