@@ -1,36 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useTimerStore } from "./store/useTimerStore";
+import { formatStringNumber } from "./utils";
 import Timer from "./Timer";
-import { useTimerStore } from "./useTimerStore";
 
 const FormTimer = () => {
   const [time, setTime] = useState({ hrs: "00", mins: "00", secs: "00" });
-
-  const { ajoutTimer, deleteTimer, update, timeToMs, msToTime, tab } =
+  const { tab, timeToMs, msToTime, update, addTime, deleteTimer } =
     useTimerStore();
 
-  const handleChange = (field, val) => {
-    if (isNaN(val)) return;
-
-    if (field === "hrs" && val > 23) {
-      val = 23;
-    } else {
-      if (val > 59) val = 59;
-    }
-    val = val.toString().padStart(2, "0");
-    setTime((prev) => ({ ...prev, [field]: val }));
-  };
-
-  useEffect(() => {
-    update(time);
-    console.log("time to ms = ", timeToMs(time));
-    return () => {};
-  }, [time]);
-
   const handleClick = () => {
-    ajoutTimer();
+    addTime();
   };
 
-  console.log(`hour : ${time.hrs} -- min: ${time.mins} -- sec: ${time.secs}`);
+  const handleChange = (property, value) => {
+    if (isNaN(value)) return;
+    let val = value;
+    if (property === "hrs" && value > 23) val = 23;
+    else if (value > 59) val = 59;
+    val = formatStringNumber(val);
+    setTime((prev) => {
+      const newTime = { ...prev, [property]: val };
+      update(newTime);
+      return newTime;
+    });
+  };
 
   return (
     <div className="mx-auto flex flex-col min-h-full max-w-3xl gap-8 p-4">
@@ -74,16 +67,7 @@ const FormTimer = () => {
       </div>
       <div>
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          {tab &&
-            tab.map((el) => (
-              <Timer
-                time={time}
-                msToTime={msToTime}
-                duration={el.ms}
-                key={el.id}
-                id={el.id}
-              />
-            ))}
+          {tab && tab.map((el) => <Timer key={el.id} timerObj={el} />)}
         </div>
       </div>
     </div>
