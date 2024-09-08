@@ -2,19 +2,28 @@ import { useState } from "react";
 import { timeToMs, msToTime } from "../utils";
 
 export const useTimerStore = () => {
-  const [ms, setMs] = useState();
+  const [duration, setDuration] = useState();
   const [time, setTime] = useState();
   const [tab, setTab] = useState([]);
 
   const addTime = () => {
-    const newMs = timeToMs(time);
-    console.log("time dans le add: ", time);
+    const timeMs = timeToMs(time);
+    const now = new Date().getTime() + 2 * 3600000; //getTime pour avoir en ms le moment precis
+    const startedTime = msToTime(now); // pour avoir en heure
+    const endTime = now + timeMs;
+
+    console.log("endTime dans addTime", endTime);
+    console.log("en hms startedTime = ", startedTime);
+    console.log("en hms endtime = ", msToTime(endTime));
     setTab((prev) => [
       ...prev,
       {
-        ms: newMs,
+        duration: timeMs,
+        //  timeLeft:
+        endAt: msToTime(endTime),
         time: time,
         id: Math.random(),
+        isRunning: true,
       },
     ]);
   };
