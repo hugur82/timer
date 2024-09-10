@@ -5,7 +5,7 @@ import Timer from "./Timer";
 
 const FormTimer = () => {
   const [time, setTime] = useState({ hrs: "00", mins: "00", secs: "00" });
-  const { tab, timeToMs, msToTime, update, addTime, deleteTimer } =
+  const { tab, update, addTime, deleteTimer, toggleIsRunning, resetTimer } =
     useTimerStore();
 
   const handleClick = () => {
@@ -67,7 +67,17 @@ const FormTimer = () => {
       </div>
       <div>
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          {tab && tab.map((el) => <Timer key={el.id} timerObj={el} />)}
+          {tab.length > 0
+            ? tab?.map((el) => (
+                <Timer
+                  key={el.id}
+                  timerObj={el}
+                  toggleIsRunning={toggleIsRunning}
+                  deleteTimer={deleteTimer}
+                  resetTimer={resetTimer}
+                />
+              ))
+            : null}
         </div>
       </div>
     </div>
