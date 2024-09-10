@@ -22,59 +22,62 @@ const Timer = ({ timerObj, deleteTimer, toggleIsRunning, resetTimer }) => {
   const percent = (timerObj.timeLeft / timerObj.duration - 1) * -100;
 
   return (
-    <div className="max-w-xs mx-auto">
-      <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center">
+    <div className="w-56 mx-auto">
+      <div className="bg-sky-700 shadow-lg rounded-lg py-3 flex flex-col items-center">
         <div className="relative">
           <svg className="w-40 h-40" viewBox="0 0 36 36">
             <path
-              className="text-gray-300"
+              className="text-sky-600"
               d="M18 2.0845
                  a 15.9155 15.9155 0 0 1 0 31.831
                  a 15.9155 15.9155 0 0 1 0 -31.831"
               fill="none"
-              strokeWidth="3"
+              strokeWidth="2"
               stroke="currentColor"
             />
             <path
-              className="text-blue-500"
+              className="text-sky-400 transition-all duration-1000 ease-in-out "
               d="M18 2.0845
                  a 15.9155 15.9155 0 0 1 0 31.831
                  a 15.9155 15.9155 0 0 1 0 -31.831"
               fill="none"
-              strokeWidth="3"
+              strokeWidth="1"
               strokeDasharray={`${percent}, 100`}
               stroke="currentColor"
               strokeLinecap="round"
             />
           </svg>
 
-          <div className="absolute inset-0 flex flex-col justify-center items-center">
-            <div className="text-sm font-semibold text-black">
+          <div className="absolute inset-0 flex flex-col justify-center items-center gap-2 ">
+            <div className="text-sm font-semibold text-sky-400">
               {endTime.hrs}:{endTime.mins}
             </div>
-            <div className="text-xl font-semibold text-black">{printTime}</div>
-            <div className="text-sm font-semibold text-black">{textTime}</div>
+            <div className="text-3xl font-semibold text-sky-400">
+              {printTime}
+            </div>
+            <div className="text-sm font-semibold text-sky-400">{textTime}</div>
           </div>
         </div>
-        <div className="flex gap-3 justify-evenly">
+        <div>{percent}</div>
+        <div className="flex gap-3 justify-between px-2 w-full">
           {timerObj.isRunning ? (
             <button
               onClick={() => toggleIsRunning(timerObj.id)}
-              className="mt-4 px-4 py-2 bg-orange-500 text-white rounded"
+              className=" mt-4 px-4 py-2  bg-sky-900 active:bg-sky-950 text-amber-600 rounded"
             >
               <Pause size={24} />
             </button>
           ) : timerObj.timeLeft > 0 ? (
             <button
               onClick={() => toggleIsRunning(timerObj.id)}
-              className="mt-4 px-4 py-2 bg-green-400 text-white rounded"
+              className="mt-4 px-4 py-2 bg-sky-900 active:bg-sky-950 text-green-600 rounded"
             >
               <Play size={24} />
             </button>
           ) : (
             <button
               onClick={() => resetTimer(timerObj.id)}
-              className="mt-4 px-4 py-2 bg-cyan-600 text-white rounded"
+              className="mt-4 px-4 py-2  bg-sky-900 active:bg-sky-950 text-yellow-300 rounded"
             >
               <RotateCcw size={24} />
             </button>
@@ -82,7 +85,7 @@ const Timer = ({ timerObj, deleteTimer, toggleIsRunning, resetTimer }) => {
 
           <button
             onClick={() => deleteTimer(timerObj.id)}
-            className="mt-4 px-4 py-2 bg-red-700 text-white rounded"
+            className="mt-4 px-4 py-2 bg-sky-900 active:bg-sky-950 text-red-500 rounded "
           >
             <X size={24} />
           </button>
